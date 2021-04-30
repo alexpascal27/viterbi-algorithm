@@ -33,16 +33,10 @@ class Viterbi:
         for i in range(1, len(observation_sequence) + 1):
             for s in range(len(self.S)):
                 max_list = np.zeros(len(self.S), dtype=np.double)
-                # max_list_str = ""
                 # form the list that we use in the max
                 # for each state
                 for state in range(len(self.S)):
                     max_list[state] = self.calculated_values[state][i - 1] + self.T[state][s]
-                    """
-                    max_list_str += "(P_" + self.S[state] + "(" + self.Sigma[observation_sequence[i]] + ", " + str(i-1) + "){" + str(self.calculated_values[state][i - 1]) + "} + P_" + self.S[state] + self.S[s] + "{" + str(self.T[state][s]) + "}):{" + str(max_list[state]) + "}"
-                    if i < len(observation_sequence) - 1:
-                        max_list_str += ", "
-                    """
 
                 # once we have the max list choose a max and note down what state we chose
                 max_state, state_index = self.__get_state_from_max_list(max_list)
@@ -52,10 +46,6 @@ class Viterbi:
                     self.decisions[s][i-1] = state_index
 
                 self.calculated_max_values[s][i-1] = max_state
-
-                # print()
-                # print("P_" + self.S[s] + "(" + self.Sigma[observation_sequence[i]] + ", " + str(i) + ") = e_" + self.S[s] + "(" + self.Sigma[observation_sequence[i]] + "):{" + str(self.E[s][observation_sequence[i]]) + "} + max(" + max_list_str + "):{" + str(max_state) + "}")
-                # print()
 
         self.compute_sequence()
 
