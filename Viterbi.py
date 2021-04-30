@@ -24,10 +24,10 @@ class Viterbi:
         # initialise the values we calculate
         self.calculated_values = np.zeros((len(self.S), len(observation_sequence)), dtype=np.double)
         self.calculated_max_values = np.zeros((len(self.S), len(observation_sequence)), dtype=np.double)
-        self.decisions = np.zeros((len(self.S), len(observation_sequence)), dtype=int)
+        self.decisions = np.zeros((len(self.S), len(observation_sequence)-1), dtype=int)
         for i in range(len(start_values)):
             self.calculated_values[i][0] = start_values[i]
-        self.sequence = np.chararray((1, len(observation_sequence)))
+        self.sequence = np.chararray((1, len(observation_sequence)), unicode=True)
 
         # go through sequence ignoring the start char
         for i in range(1, len(observation_sequence) + 1):
@@ -49,7 +49,7 @@ class Viterbi:
 
                 if not i >= len(observation_sequence):
                     self.calculated_values[s][i] = np.double(self.E[s][observation_sequence[i]]) + max_state
-                    self.decisions[s][i] = state_index
+                    self.decisions[s][i-1] = state_index
 
                 self.calculated_max_values[s][i-1] = max_state
 
